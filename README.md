@@ -25,9 +25,9 @@ This project is currently under development as part of my Cloud/DevOps skills up
 ## 🗺 Roadmap
 
 - [x] Define objectives
-- [ ] Initialize Next.js frontend
-- [ ] Initialize NestJS backend
-- [ ] Configure Docker & PostgreSQL
+- [x] Initialize Next.js frontend
+- [x] Initialize NestJS backend
+- [x] Configure Docker & PostgreSQL
 - [ ] Write Terraform architecture
 - [ ] Deploy on AWS
 - [ ] Write final eBook
