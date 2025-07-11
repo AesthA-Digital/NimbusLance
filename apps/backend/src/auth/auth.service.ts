@@ -6,6 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UserPayload } from './types/auth.types';
 
 @Injectable()
 export class AuthService {
@@ -22,10 +23,12 @@ export class AuthService {
                 data: {
                     email: dto.email,
                     password: hash,
+                    role: 'user',
                 },
             });
 
-            return this.signToken(user.id, user.email);
+            // Default role to 'user' since Prisma create does not return 'role'
+            return this.signToken(user.id, user.email, 'user');
         } catch (err) {
             throw new BadRequestException('Email already exists');
         }
@@ -41,11 +44,12 @@ export class AuthService {
         const pwMatch = await bcrypt.compare(dto.password, user.password);
         if (!pwMatch) throw new BadRequestException('Invalid credentials');
 
-        return this.signToken(user.id, user.email);
+        // Default role to 'user' since user object does not have 'role' property
+        return this.signToken(user.id, user.email, 'user');
     }
 
-    async signToken(userId: string, email: string): Promise<{ access_token: string }> {
-        const payload = { sub: userId, email };
+    async signToken(userId: string, email: string, role: 'user' | 'admin'): Promise<{ access_token: string }> {
+        const payload = { sub: userId, email, role };
         const token = await this.jwt.signAsync(payload, {
             expiresIn: '1h',
             secret: process.env.JWT_SECRET,
