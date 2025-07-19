@@ -1,0 +1,54 @@
+1️⃣ auth.controller.ts
+Purpose:
+Handles authentication endpoints (/auth/signup, /auth/signin).
+Let’s review the file.
+
+✅ auth.controller.ts Review
+
+Summary:
+Exposes /auth/signup and /auth/signin endpoints.
+Uses DTO for input validation.
+Delegates logic to AuthService.
+
+Best Practices:
+Clean, minimal, and correct.
+No business logic in the controller.
+Uses dependency injection.
+
+Suggestions:
+If you want to add API documentation (Swagger), you can use decorators like @ApiTags('auth'), but this is optional.
+
+Next: I’ll review auth.service.ts.
+
+✅ auth.service.ts Review
+
+Summary:
+Handles user signup and signin with secure password hashing (bcrypt, 12 rounds).
+Uses Prisma for DB access.
+Issues JWT tokens with 1-hour expiry.
+Handles errors with clear messages.
+
+Best Practices:
+Passwords are hashed before storage.
+JWT secret is read from environment.
+Generic error messages for invalid credentials (prevents user enumeration).
+Uses dependency injection for services.
+
+
+Suggestions for Further Security/Improvements:
+Rate Limiting (Optional, for production):
+Prevent brute-force attacks on signin.
+Can be implemented with a global guard or middleware.
+Email Normalization:
+Consider normalizing emails to lowercase before storing/comparing.
+Account Lockout (Optional, for production):
+Lock account after X failed attempts.
+Return Consistent Error Messages:
+You already do this for signin, which is good.
+Token Expiry Config:
+Consider making token expiry configurable via env.
+Your current implementation is secure and follows best practices for a modern SaaS.
+
+
+Add Role Guards for Endpoints (user.service.ts)
+You can now easily create guards for role-based access:

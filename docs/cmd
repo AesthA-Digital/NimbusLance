@@ -1,0 +1,27 @@
+connect to database : 
+
+    sudo docker exec -it nimbuslance_db psql -U postgres -d nimbuslance
+
+check table on database :
+
+    \dt
+
+migrate database :
+
+    npx prisma migrate dev --name <name>
+    npx prisma generate
+
+    if any issues (onyl Dev) : 
+        npx prisma migrate reset
+
+exec cmd on container : 
+
+    sudo docker exec -it docker-backend-1 <cmd>
+
+check route mapping : 
+
+  sudo docker logs docker-backend-1 | grep "Mapped"
+
+check backend logs : 
+
+    sudo docker logs docker-backend-1 --tail 50
