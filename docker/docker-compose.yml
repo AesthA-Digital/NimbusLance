@@ -20,6 +20,9 @@ services:
       - "3000:3000"
     depends_on:
       - postgres
+    command: npm run start:dev
+    volumes:
+      - ../apps/backend:/app
 
 volumes:
   postgres_data:
