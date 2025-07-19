@@ -89,6 +89,15 @@ export default {
   },
 }
 ```
+**Check your global CSS:**  
+
+Open `apps/frontend/src/app/globals.css` and make sure the first line is:
+
+```css
+@import "tailwindcss";
+```
+
+This ensures Tailwind's styles are loaded before anything else, giving you full access to utility classes throughout your app.
 
 
 **Why Tailwind CSS?**

@@ -1,12 +1,46 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from '../auth/decorator/get-user.decorator';
 import { UserService } from './user.service';
+import { UserPayload } from '../auth/types/auth.types';
 
 @Controller('users')
+@UseGuards(AuthGuard('jwt'))
 export class UserController {
-    constructor(private readonly userService: UserService) { }
 
-    @Get()
-    findAll() {
-        return this.userService.findAll();
+    constructor(private userService: UserService) { }
+
+    @Get('me')
+    async getMe(@GetUser() user: UserPayload) {
+        const userData = await this.userService.validateAndGetUser(user.sub);
+
+        return {
+            ...userData,
+            message: 'Profile retrieved successfully'
+        };
+    }
+
+    @Get('stats')
+    async getUserStats(@GetUser() user: UserPayload) {
+        await this.userService.validateAndGetUser(user.sub);
+        const stats = await this.userService.getUserStats(user.sub);
+
+        return {
+            userId: user.sub,
+            stats,
+            message: 'User statistics retrieved'
+        };
+    }
+
+    @Get('profile')
+    async getProfile(@GetUser() user: UserPayload) {
+        const userData = await this.userService.validateAndGetUser(user.sub);
+        const stats = await this.userService.getUserStats(user.sub);
+
+        return {
+            profile: userData,
+            stats,
+            lastAccessed: new Date().toISOString()
+        };
     }
 }

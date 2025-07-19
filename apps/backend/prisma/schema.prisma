@@ -5,18 +5,33 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-provider = "postgresql"
-url = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-id String @id @default(uuid())
-email String @unique
-password String
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
+    id        String   @id @default(uuid())
+    email     String   @unique
+    password  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    role      String   @default("user")
+    clients   Client[]
+}
+
+model Client {
+    id        String   @id @default(uuid())
+    name      String
+    email     String?
+    phone     String?
+    company   String?
+    notes     String?
+    userId    String
+    user      User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
