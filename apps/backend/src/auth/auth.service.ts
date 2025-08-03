@@ -1,62 +1,63 @@
-import {
-    BadRequestException,
-    Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { UserPayload } from './types/auth.types';
+//import { UserPayload } from './types/auth.types';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private prisma: PrismaService,
-        private jwt: JwtService,
-    ) { }
+  constructor(
+    private prisma: PrismaService,
+    private jwt: JwtService,
+  ) {}
 
-    async signup(dto: AuthDto) {
-        const hash = await bcrypt.hash(dto.password, 12);
+  async signup(dto: AuthDto) {
+    const hash = await bcrypt.hash(dto.password, 12);
 
-        try {
-            const user = await this.prisma.user.create({
-                data: {
-                    email: dto.email,
-                    password: hash,
-                    role: 'user',
-                },
-            });
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          email: dto.email,
+          password: hash,
+          role: 'user',
+        },
+      });
 
-            // Default role to 'user' since Prisma create does not return 'role'
-            return this.signToken(user.id, user.email, 'user');
-        } catch (err) {
-            throw new BadRequestException('Email already exists');
-        }
+      // Default role to 'user' since Prisma create does not return 'role'
+      return this.signToken(user.id, user.email, 'user');
+    } catch {
+      throw new BadRequestException('Email already exists');
     }
+  }
 
-    async signin(dto: AuthDto) {
-        const user = await this.prisma.user.findUnique({
-            where: { email: dto.email },
-        });
+  async signin(dto: AuthDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
 
-        if (!user) throw new BadRequestException('Invalid credentials');
+    if (!user) throw new BadRequestException('Invalid credentials');
 
-        const pwMatch = await bcrypt.compare(dto.password, user.password);
-        if (!pwMatch) throw new BadRequestException('Invalid credentials');
+    const pwMatch = await bcrypt.compare(dto.password, user.password);
+    if (!pwMatch) throw new BadRequestException('Invalid credentials');
 
-        // Default role to 'user' since user object does not have 'role' property
-        return this.signToken(user.id, user.email, 'user');
-    }
+    // Default role to 'user' since user object does not have 'role' property
+    return this.signToken(user.id, user.email, 'user');
+  }
 
-    async signToken(userId: string, email: string, role: 'user' | 'admin'): Promise<{ access_token: string }> {
-        const payload = { sub: userId, email, role };
-        const token = await this.jwt.signAsync(payload, {
-            expiresIn: '1h',
-            secret: process.env.JWT_SECRET,
-        });
+  async signToken(
+    userId: string,
+    email: string,
+    role: 'user' | 'admin',
+  ): Promise<{ access_token: string }> {
+    const payload = { sub: userId, email, role };
+    const token = await this.jwt.signAsync(payload, {
+      expiresIn: '1h',
+      secret: process.env.JWT_SECRET,
+    });
 
-        return {
-            access_token: token,
-        };
-    }
+    return {
+      access_token: token,
+    };
+  }
 }

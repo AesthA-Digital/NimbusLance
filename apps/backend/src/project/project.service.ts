@@ -5,42 +5,42 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
 export class ProjectService {
-    constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
-    create(userId: string, dto: CreateProjectDto) {
-        return this.prisma.project.create({
-            data: {
-                ...dto,
-                userId,
-            },
-        });
-    }
+  create(userId: string, dto: CreateProjectDto) {
+    return this.prisma.project.create({
+      data: {
+        ...dto,
+        userId,
+      },
+    });
+  }
 
-    findAll(userId: string) {
-        return this.prisma.project.findMany({
-            where: { userId },
-            include: { client: true },
-            orderBy: { createdAt: 'desc' },
-        });
-    }
+  findAll(userId: string) {
+    return this.prisma.project.findMany({
+      where: { userId },
+      include: { client: true },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 
-    findOne(userId: string, id: string) {
-        return this.prisma.project.findFirst({
-            where: { id, userId },
-            include: { client: true },
-        });
-    }
+  findOne(userId: string, id: string) {
+    return this.prisma.project.findFirst({
+      where: { id, userId },
+      include: { client: true },
+    });
+  }
 
-    update(userId: string, id: string, dto: UpdateProjectDto) {
-        return this.prisma.project.updateMany({
-            where: { id, userId },
-            data: dto,
-        });
-    }
+  update(userId: string, id: string, dto: UpdateProjectDto) {
+    return this.prisma.project.updateMany({
+      where: { id, userId },
+      data: dto,
+    });
+  }
 
-    remove(userId: string, id: string) {
-        return this.prisma.project.deleteMany({
-            where: { id, userId },
-        });
-    }
+  remove(userId: string, id: string) {
+    return this.prisma.project.deleteMany({
+      where: { id, userId },
+    });
+  }
 }

@@ -1,8 +1,8 @@
 # 📘 NimbusLance – Building a Fullstack Cloud-Ready Freelance SaaS Platform
 
-# 7️⃣ Chapter 7 — Building the Project Module (🔗 Client Linking & Secure CRUD)
+# 7️⃣ Chapter 6 — Building the Project Module (🔗 Client Linking & Secure CRUD)
 
-## 7.1 ✨ Overview
+## 6.1 ✨ Overview
 
 In this chapter, you’ll build the **Project** module—the heart of NimbusLance’s workflow! Projects are linked to both a client and the authenticated user, and will later connect to invoices, timelines, and dashboards.
 
@@ -15,7 +15,7 @@ In this chapter, you’ll build the **Project** module—the heart of NimbusLanc
 
 ---
 
-## 7.2 🧩 Why Projects?
+## 6.2 🧩 Why Projects?
 
 Projects are the bridge between clients and billing. By linking each project to both a user and a client, you ensure:
 - 🧑‍💻 Clean, isolated data access
@@ -24,7 +24,7 @@ Projects are the bridge between clients and billing. By linking each project to 
 
 ---
 
-## 7.3 🗃️ Prisma Schema
+## 6.3 🗃️ Prisma Schema
 
 **In `prisma/schema.prisma`:**
 
@@ -62,7 +62,7 @@ model User {
 
 ---
 
-## 7.4 🏗️ Migration
+## 6.4 🏗️ Migration
 
 After updating your schema, run (inside your backend container):
 
@@ -73,7 +73,7 @@ npx prisma generate
 
 ---
 
-## 7.5 🗂️ Module Structure
+## 6.5 🗂️ Module Structure
 
 ```
 apps/backend/src/
@@ -88,7 +88,7 @@ apps/backend/src/
 
 ---
 
-## 7.6 📦 DTOs & Enum
+## 6.6 📦 DTOs & Enum
 
 **`create-project.dto.ts`:**
 ```typescript
@@ -127,7 +127,7 @@ export class UpdateProjectDto extends PartialType(CreateProjectDto) {}
 
 ---
 
-## 7.7 ⚙️ Service Layer
+## 6.7 ⚙️ Service Layer
 
 **`project.service.ts`:**
 ```typescript
@@ -179,7 +179,7 @@ export class ProjectService {
 
 ---
 
-## 7.8 🛡️ Controller & Protection
+## 6.8 🛡️ Controller & Protection
 
 **`project.controller.ts`:**
 ```typescript
@@ -226,7 +226,7 @@ export class ProjectController {
 
 ---
 
-## 7.9 🗺️ API Routes
+## 6.9 🗺️ API Routes
 
 | Method | Path             | Action                    |
 |--------|------------------|--------------------------|
@@ -243,7 +243,7 @@ Authorization: Bearer YOUR_ACCESS_TOKEN
 
 ---
 
-## 7.10 🧪 Example Request: Create Project
+## 6.10 🧪 Example Request: Create Project
 
 ```http
 POST http://localhost:3000/projects
@@ -260,7 +260,7 @@ Authorization: Bearer YOUR_ACCESS_TOKEN
 
 ---
 
-## 7.11 🖼️ Screenshots to Include
+## 6.11 🖼️ Screenshots to Include
 
 - ✅ POST /projects with `clientId`
 - ✅ GET /projects showing client info joined
@@ -268,7 +268,7 @@ Authorization: Bearer YOUR_ACCESS_TOKEN
 
 ---
 
-## 7.12 🛡️ Security & Best Practices
+## 6.12 🛡️ Security & Best Practices
 
 - 🏷️ **Ownership enforced:** All queries filter by `userId`.
 - 🔒 **JWT protection:** All routes require authentication.
@@ -278,7 +278,7 @@ Authorization: Bearer YOUR_ACCESS_TOKEN
 
 ---
 
-## 7.13 🧰 Troubleshooting
+## 6.13 🧰 Troubleshooting
 
 - **Project table not found?**
   - Run migrations inside your backend container: `npx prisma migrate dev --name add-project-model`
@@ -291,7 +291,7 @@ Authorization: Bearer YOUR_ACCESS_TOKEN
 
 ---
 
-## 7.14 🎓 What You Learned
+## 6.14 🎓 What You Learned
 
 - 🏗️ How to create a secure, relational module linked to both client and user
 - 🧩 How to use enums to model workflow

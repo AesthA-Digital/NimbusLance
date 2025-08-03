@@ -1,8 +1,8 @@
 # 📘 NimbusLance – Building a Fullstack Cloud-Ready Freelance SaaS Platform
 
-# 6️⃣ Chapter 6 — Building the Client Module (🔐 Secure CRUD with Ownership)
+# 6️⃣ Chapter 5 — Building the Client Module (🔐 Secure CRUD with Ownership)
 
-## 6.1 ✨ Overview
+## 5.1 ✨ Overview
 
 In this chapter, you’ll implement the first real business feature of NimbusLance: **managing clients**. Each authenticated user will be able to:
 
@@ -15,7 +15,7 @@ In this chapter, you’ll implement the first real business feature of NimbusLan
 
 ---
 
-## 6.2 🛠️ Features Covered
+## 5.2 🛠️ Features Covered
 
 - 📝 Full CRUD operations on the Client model
 - 🏷️ Ownership enforcement: each client belongs to a user
@@ -26,7 +26,7 @@ In this chapter, you’ll implement the first real business feature of NimbusLan
 
 ---
 
-## 6.3 🗃️ Client Model (Prisma Schema)
+## 5.3 🗃️ Client Model (Prisma Schema)
 
 **prisma/schema.prisma**
 ```prisma
@@ -57,7 +57,7 @@ model User {
 
 ---
 
-## 6.4 🏗️ Database Migration
+## 5.4 🏗️ Database Migration
 
 After updating the schema, run (inside your backend container):
 
@@ -68,7 +68,7 @@ npx prisma generate
 
 ---
 
-## 6.5 🗂️ Module Structure
+## 5.5 🗂️ Module Structure
 
 ```
 apps/backend/src/
@@ -83,9 +83,9 @@ apps/backend/src/
 
 ---
 
-## 6.6 📦 DTO Definitions
+## 5.6 📦 DTO Definitions
 
-### 6.6.1 📝 CreateClientDto
+### 5.6.1 📝 CreateClientDto
 ```typescript
 import { IsString, IsOptional, IsEmail } from 'class-validator';
 
@@ -111,7 +111,7 @@ export class CreateClientDto {
 }
 ```
 
-### 6.6.2 📝 UpdateClientDto
+### 5.6.2 📝 UpdateClientDto
 ```typescript
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateClientDto } from './create-client.dto';
@@ -121,7 +121,7 @@ export class UpdateClientDto extends PartialType(CreateClientDto) {}
 
 ---
 
-## 6.7 ⚙️ ClientService (Business Logic)
+## 5.7 ⚙️ ClientService (Business Logic)
 
 **apps/backend/src/client/client.service.ts**
 ```typescript
@@ -171,7 +171,7 @@ export class ClientService {
 
 ---
 
-## 6.8 🛡️ ClientController (API Layer)
+## 5.8 🛡️ ClientController (API Layer)
 
 **apps/backend/src/client/client.controller.ts**
 ```typescript
@@ -218,7 +218,7 @@ export class ClientController {
 
 ---
 
-## 6.9 🗺️ API Route Summary
+## 5.9 🗺️ API Route Summary
 
 | Method | Path           | Action                  |
 |--------|----------------|------------------------|
@@ -230,7 +230,7 @@ export class ClientController {
 
 ---
 
-## 6.10 🧪 Testing the Client API
+## 5.10 🧪 Testing the Client API
 
 **All requests must include:**
 ```
@@ -264,7 +264,7 @@ curl -X DELETE http://localhost:3000/clients/CLIENT_ID -H "Authorization: Bearer
 
 ---
 
-## 6.11 🛡️ Security & Best Practices
+## 5.11 🛡️ Security & Best Practices
 
 - 🏷️ **Ownership enforced:** All queries filter by `userId`.
 - 🔒 **JWT protection:** All routes require authentication.
@@ -274,7 +274,7 @@ curl -X DELETE http://localhost:3000/clients/CLIENT_ID -H "Authorization: Bearer
 
 ---
 
-## 6.12 🎓 What You Learned
+## 5.12 🎓 What You Learned
 
 - 🏗️ How to create your first business domain module
 - 🔗 How to link entities with user ownership using Prisma
@@ -284,7 +284,7 @@ curl -X DELETE http://localhost:3000/clients/CLIENT_ID -H "Authorization: Bearer
 
 ---
 
-## 6.13 🚀 Next Up
+## 5.13 🚀 Next Up
 
 You now have a scalable and secure base for all resource-based modules: projects, invoices, payments… They will follow a very similar structure.
 

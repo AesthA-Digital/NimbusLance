@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/decorator/get-user.decorator';
 import { UserService } from './user.service';
@@ -7,40 +7,39 @@ import { UserPayload } from '../auth/types/auth.types';
 @Controller('users')
 @UseGuards(AuthGuard('jwt'))
 export class UserController {
+  constructor(private userService: UserService) {}
 
-    constructor(private userService: UserService) { }
+  @Get('me')
+  async getMe(@GetUser() user: UserPayload) {
+    const userData = await this.userService.validateAndGetUser(user.sub);
 
-    @Get('me')
-    async getMe(@GetUser() user: UserPayload) {
-        const userData = await this.userService.validateAndGetUser(user.sub);
+    return {
+      ...userData,
+      message: 'Profile retrieved successfully',
+    };
+  }
 
-        return {
-            ...userData,
-            message: 'Profile retrieved successfully'
-        };
-    }
+  @Get('stats')
+  async getUserStats(@GetUser() user: UserPayload) {
+    await this.userService.validateAndGetUser(user.sub);
+    const stats = this.userService.getUserStats();
 
-    @Get('stats')
-    async getUserStats(@GetUser() user: UserPayload) {
-        await this.userService.validateAndGetUser(user.sub);
-        const stats = await this.userService.getUserStats(user.sub);
+    return {
+      userId: user.sub,
+      stats,
+      message: 'User statistics retrieved',
+    };
+  }
 
-        return {
-            userId: user.sub,
-            stats,
-            message: 'User statistics retrieved'
-        };
-    }
+  @Get('profile')
+  async getProfile(@GetUser() user: UserPayload) {
+    const userData = await this.userService.validateAndGetUser(user.sub);
+    const stats = this.userService.getUserStats();
 
-    @Get('profile')
-    async getProfile(@GetUser() user: UserPayload) {
-        const userData = await this.userService.validateAndGetUser(user.sub);
-        const stats = await this.userService.getUserStats(user.sub);
-
-        return {
-            profile: userData,
-            stats,
-            lastAccessed: new Date().toISOString()
-        };
-    }
+    return {
+      profile: userData,
+      stats,
+      lastAccessed: new Date().toISOString(),
+    };
+  }
 }
