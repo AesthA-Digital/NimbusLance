@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -11,8 +12,10 @@ export default function Home() {
           Your modern freelance SaaS platform built with Next.js, Tailwind CSS, and ShadCN UI.
         </p>
         <div className="flex gap-4 justify-center">
-          <Button size="lg">
-            Get Started
+          <Button size="lg" asChild>
+            <Link href="/dashboard">
+              View Dashboard
+            </Link>
           </Button>
           <Button variant="outline" size="lg">
             Learn More
